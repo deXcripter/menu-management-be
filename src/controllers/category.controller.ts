@@ -3,7 +3,7 @@ import Category from "../models/category.model";
 import asyncHandler from "../utils/async-wrapper";
 import { Request, Response, NextFunction } from "express";
 import ICategory from "../types/category";
-import { uploadImage } from "../utils/image-uploader";
+import { deleteImage, uploadImage } from "../utils/image-uploader";
 import IPagination from "../types/pagination";
 
 const folder = "categories";
@@ -68,5 +68,39 @@ const getCategory = asyncHandler(
   }
 );
 
+const updateCategory = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const payload = req.query as unknown as ICategory;
+
+    console.log(payload);
+
+    // @ts-ignore - delete image from payload to avoid mutating from malicious users since the endpoint is not protected
+    delete payload.image;
+
+    const existingCategory = await Category.findOne({ name: payload.name });
+    if (existingCategory && existingCategory._id.toString() !== id)
+      return next(new AppError("Category name already exists", 400));
+
+    if (req.file) {
+      const imageLink = await uploadImage(req, folder);
+      if (!imageLink) return next(new AppError("Image upload failed", 400));
+      deleteImage(folder, payload.image); // delete the old image before replacing
+      payload.image = imageLink;
+    }
+
+    const category = await Category.findByIdAndUpdate(id, payload, {
+      new: true,
+    });
+
+    if (!category) return next(new AppError("Category not found", 404));
+
+    res.status(200).json({
+      status: "success",
+      data: category,
+    });
+  }
+);
+
 // exports
-export { createCategory, getCategory };
+export { createCategory, getCategory, updateCategory };
