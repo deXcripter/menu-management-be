@@ -1,3 +1,6 @@
+import mongoose from "mongoose";
+import ISubCategory from "./sub-category";
+
 export default interface ICategory {
   name: string;
   image: string;
@@ -5,4 +8,6 @@ export default interface ICategory {
   isTaxable: boolean;
   tax?: number;
   taxType?: string;
+
+  subCategories: mongoose.Types.ObjectId[]; // manages the id's of subcategories referencing the category.
 }

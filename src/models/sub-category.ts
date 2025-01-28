@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import ICategory from "../types/category";
+import ISubCategory from "../types/sub-category";
 
-const categorySchema = new mongoose.Schema<ICategory>({
+const subCategorySchema = new mongoose.Schema<ISubCategory>({
   name: {
     type: String,
     required: true,
@@ -14,7 +14,7 @@ const categorySchema = new mongoose.Schema<ICategory>({
     type: String,
     required: true,
     trim: true,
-    // require: [true, "Please enter an image URL"],
+    require: [true, "Please enter an image URL"],
   },
   description: {
     type: String,
@@ -35,16 +35,8 @@ const categorySchema = new mongoose.Schema<ICategory>({
       },
     },
   },
-  taxType: {
-    type: String,
-    validate: {
-      validator: function (v: String) {
-        return this.isTaxable ? v !== null : v === null;
-      },
-    },
-  },
 });
 
-const Category = mongoose.model<ICategory>("Category", categorySchema);
+const Category = mongoose.model<ISubCategory>("Category", subCategorySchema);
 
 export default Category;
