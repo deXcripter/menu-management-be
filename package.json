@@ -5,5 +5,21 @@
     "express": "^4.21.2",
     "mongoose": "^8.9.5",
     "morgan": "^1.10.0"
-  }
+  },
+  "name": "menu-management-be",
+  "version": "1.0.0",
+  "description": "A node.js server for managing menu",
+  "main": "server.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "menu-management",
+    "menu",
+    "express.js",
+    "node.js"
+  ],
+  "author": "deXcripter",
+  "license": "ISC"
 }
