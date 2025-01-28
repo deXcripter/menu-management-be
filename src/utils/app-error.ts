@@ -7,9 +7,7 @@ class AppError extends Error {
     super(message);
     this.isOperational = true;
     this.statusCode = statusCode;
-    this.status = `${statusCode}`.startsWith("4")
-      ? "Invalid request: Fail"
-      : "Unhandled Error";
+    this.status = `${statusCode}`.startsWith("4") ? "Fail" : "Error";
   }
 }
 
