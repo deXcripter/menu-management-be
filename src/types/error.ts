@@ -5,5 +5,9 @@ export interface IError {
   status: string;
   statusCode: number;
   code?: number;
-  keyPattern?: {};
+  keyPattern?: string[];
+  keyValue?: { [key: string]: string };
+
+  path?: string;
+  value?: string;
 }
