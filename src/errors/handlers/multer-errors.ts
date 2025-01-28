@@ -3,6 +3,7 @@ import { IError } from "../../types/error";
 import AppError from "../../utils/app-error";
 
 const handleMulterError = (err: IError, res: Response): AppError => {
+  console.log(`instance of multer error`);
   switch (err.code as any as string) {
     case "LIMIT_FILE_SIZE":
       return new AppError(

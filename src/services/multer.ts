@@ -9,6 +9,7 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: FileFilterCallback
 ) => {
+  req.setTimeout(15000);
   const allowedTypes = [".jpg", ".jpeg", ".png", ".gif"];
   const ext = path.extname(file.originalname).toLowerCase();
   if (allowedTypes.includes(ext)) {
@@ -22,7 +23,7 @@ const upload = multer({
   dest: "uploads/",
   fileFilter: fileFilter,
   limits: {
-    fileSize: 5 * 1024 * 1024, // Limit file size to 5MB
+    fileSize: 5 * 1024 * 1024, // limit file size to 5MB
   },
 });
 

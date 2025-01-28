@@ -1,5 +1,5 @@
 import { Request } from "express";
-import fs from "fs/promises";
+import fs from "fs";
 import cloudinary from "../services/cloudinary";
 
 const uploadImage = async (
@@ -20,7 +20,9 @@ const uploadImage = async (
   });
 
   (async () => {
-    await fs.unlink(path);
+    fs.unlink(path, (err) => {
+      err && console.log(`Error deleting image: ${err}`);
+    });
   })();
 
   return image.secure_url;

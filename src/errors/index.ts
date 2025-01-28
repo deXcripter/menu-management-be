@@ -7,6 +7,7 @@ import handleDuplicateFieldErrors from "./handlers/duplicate-errors";
 import handleCastError from "./handlers/cast-errors";
 import { MulterError } from "multer";
 import handleMulterError from "./handlers/multer-errors";
+import handleTimeoutError from "./handlers/timeout-error";
 
 const production = process.env.NODE_ENV === "production"; // check if the environment is production or development
 
@@ -21,6 +22,7 @@ const GlobalErrorHandler = (
   if (err.code === 11000) err = handleDuplicateFieldErrors(err, res)!;
   if (err.name === "CastError") err = handleCastError(err, res)!;
   if (err instanceof MulterError) err = handleMulterError(err, res);
+  if (err.message === "Request Timeout") err = handleTimeoutError(err, res);
 
   // handling errors for both production and development enviroments
   if (production) return handleProductionErrors(err, res);

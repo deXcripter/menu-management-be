@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import ICategory from "../types/category";
 
 const categorySchema = new mongoose.Schema<ICategory>({
@@ -48,7 +48,15 @@ const categorySchema = new mongoose.Schema<ICategory>({
       },
     },
   },
+
+  // subCategories: [{ type: mongoose.Schema.ObjectId, ref: "SubCategory" }],
 });
+
+// categorySchema.methods.addSubCategory = async function (
+//   id: mongoose.Types.ObjectId
+// ) {
+//   // check if the subCategory has already been added in the category array
+// };
 
 const Category = mongoose.model<ICategory>("Category", categorySchema);
 

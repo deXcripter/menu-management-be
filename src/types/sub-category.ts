@@ -7,5 +7,5 @@ export default interface ISubCategory {
   description: string;
   isTaxable: boolean;
   tax?: number;
-  category: mongoose.Types.ObjectId;
+  categoryID: mongoose.Types.ObjectId;
 }

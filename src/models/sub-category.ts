@@ -6,7 +6,6 @@ const subCategorySchema = new mongoose.Schema<ISubCategory>({
     type: String,
     required: true,
     trim: true,
-    unique: true,
     lowercase: true,
     require: [true, "Please enter a category name"],
   },
@@ -35,8 +34,18 @@ const subCategorySchema = new mongoose.Schema<ISubCategory>({
       },
     },
   },
+  categoryID: {
+    type: mongoose.Schema.ObjectId,
+    require: [true, "A sub-category must belong to a category"],
+    ref: "Category",
+  },
 });
 
-const Category = mongoose.model<ISubCategory>("Category", subCategorySchema);
+subCategorySchema.index({ name: 1, categoryID: 1 }, { unique: true }); // ensure sub-category name is unique within a category
 
-export default Category;
+const SubCategory = mongoose.model<ISubCategory>(
+  "SubCategory",
+  subCategorySchema
+);
+
+export default SubCategory;
