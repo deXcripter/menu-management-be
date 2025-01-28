@@ -8,6 +8,8 @@ const createCategory = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body as ICategory;
 
+    console.log(req.file);
+
     const category = await Category.create(payload);
 
     res.status(201).json({
