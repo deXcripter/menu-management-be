@@ -52,12 +52,12 @@ const itemSchema = new mongoose.Schema<iItems>({
   totalAmount: Number,
 
   categoryID: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: "Category",
   },
 
   subCategoryID: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: "SubCategory",
   },
 });

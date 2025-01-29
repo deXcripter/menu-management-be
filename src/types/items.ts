@@ -1,3 +1,5 @@
+import mongoose, { mongo } from "mongoose";
+
 export default interface iItems {
   name: string;
   image: string;
@@ -8,6 +10,6 @@ export default interface iItems {
   discount: number;
   totalAmount: number;
 
-  categoryID?: string;
-  subCategoryID?: string;
+  categoryID?: mongoose.Types.ObjectId;
+  subCategoryID?: mongoose.Types.ObjectId;
 }

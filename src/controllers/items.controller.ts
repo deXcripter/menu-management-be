@@ -14,11 +14,11 @@ const createItem = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body as iItems;
 
-    if (payload.categoryID && payload.subCategoryID) {
-      return next(
-        new AppError("Item can't have both category and subcategory", 400)
-      );
-    }
+    // if (payload.categoryID && payload.subCategoryID) {
+    //   return next(
+    //     new AppError("Item can't have both category and subcategory", 400)
+    //   );
+    // }
 
     if (!payload.categoryID && !payload.subCategoryID) {
       return next(
@@ -34,6 +34,8 @@ const createItem = asyncHandler(
       if (!subCategory) {
         return next(new AppError("Subcategory not found", 404));
       }
+      payload.subCategoryID = subCategory._id;
+      delete payload.categoryID;
     }
 
     if (payload.categoryID) {
@@ -41,6 +43,8 @@ const createItem = asyncHandler(
       if (!category) {
         return next(new AppError("Category not found", 404));
       }
+      payload.categoryID = category._id;
+      delete payload.subCategoryID;
     }
 
     const newItem = new Item(payload);
@@ -63,6 +67,30 @@ const updateItem = asyncHandler(
 
     // @ts-ignore
     delete payload.image;
+
+    if (payload.categoryID && payload.subCategoryID) {
+      return next(
+        new AppError("Item can't have both category and subcategory", 400)
+      );
+    }
+
+    if (payload.subCategoryID) {
+      const subCategory = await SubCategory.findById(payload.subCategoryID);
+      if (!subCategory) {
+        return next(new AppError("Subcategory not found", 404));
+      }
+      payload.subCategoryID = subCategory._id;
+      delete payload.categoryID;
+    }
+
+    if (payload.categoryID) {
+      const category = await Category.findById(payload.categoryID);
+      if (!category) {
+        return next(new AppError("Category not found", 404));
+      }
+      payload.categoryID = category._id;
+      delete payload.subCategoryID;
+    }
 
     if (req.file) {
       const imageLink = await uploadImage(req, folder);
