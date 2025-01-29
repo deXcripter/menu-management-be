@@ -8,9 +8,9 @@ import upload from "../services/multer";
 
 const Router = express.Router();
 
-Router.get("/", getSubCategory);
-Router.route("/:id")
-  .patch(updateSubCategory)
+Router.route("/")
+  .get(getSubCategory)
   .post(upload.single("image"), createSubCategory);
+Router.patch("/:id", upload.single("image"), updateSubCategory);
 
 export { Router as subCategoryRouter };

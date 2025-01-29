@@ -5,6 +5,8 @@ import { Request, Response, NextFunction } from "express";
 import ICategory from "../types/category";
 import { deleteImage, uploadImage } from "../utils/image-uploader";
 import IPagination from "../types/pagination";
+import SubCategory from "../models/sub-category";
+import mongoose from "mongoose";
 
 const folder = "categories";
 
@@ -40,7 +42,7 @@ const getCategory = asyncHandler(
       limit = "10",
     } = req.query as { query: string; page: string; limit: string };
 
-    const searchQuery = { name: { $regex: query, $options: "i" } };
+    const searchQuery = query ? { name: { $regex: query, $options: "i" } } : {};
     const pageInt = parseInt(page);
     const limitInt = parseInt(limit);
     const skip = (pageInt - 1) * limitInt;
@@ -100,5 +102,28 @@ const updateCategory = asyncHandler(
   }
 );
 
+const getAllSubCategories = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const { page = "1", limit = "10" } = req.query as {
+      page: string;
+      limit: string;
+    };
+
+    const pageInt = parseInt(page);
+    const limitInt = parseInt(limit);
+    const skip = (pageInt - 1) * limitInt;
+
+    const subCategories = await SubCategory.find({
+      categoryID: new mongoose.Types.ObjectId(id),
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: subCategories,
+    });
+  }
+);
+
 // exports
-export { createCategory, getCategory, updateCategory };
+export { createCategory, getCategory, updateCategory, getAllSubCategories };

@@ -12,8 +12,7 @@ const folder = "sub-categories";
 const createSubCategory = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body as unknown as ISubCategory;
-    const { id } = req.params; // the category ID that the sub-category belongs to
-    const category = await Category.findById(id);
+    const category = await Category.findById(payload.categoryID);
     if (!category)
       return next(
         new AppError("Please select a valid category for the sub-category", 404)
