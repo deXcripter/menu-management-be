@@ -30,9 +30,11 @@ const subCategorySchema = new mongoose.Schema<ISubCategory>({
     type: Number,
     validate: {
       validator: function (v: Number) {
-        return this.isTaxable ? v !== null : v === null;
+        return this.isTaxable ? v !== null || 0 : v === null || 0;
       },
+      message: "Tax value must be a non-zero number if taxable",
     },
+    message: "Tax value must be a non-zero number if taxable",
   },
   categoryID: {
     type: mongoose.Schema.ObjectId,

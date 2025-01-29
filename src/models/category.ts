@@ -33,19 +33,33 @@ const categorySchema = new mongoose.Schema<ICategory>({
 
   tax: {
     type: Number,
+    required: [
+      function () {
+        return this.isTaxable;
+      },
+      "tax is required when the category is taxable",
+    ],
     validate: {
       validator: function (v: Number) {
-        return this.isTaxable ? v !== null : v === null;
+        return this.isTaxable ? v !== 0 || undefined : v === 0;
       },
+      message: "tax must be a non-zero number if taxable, else 0",
     },
   },
 
   taxType: {
     type: String,
-    validate: {
-      validator: function (v: String) {
-        return this.isTaxable ? v !== null : v === null;
+    required: [
+      function () {
+        return this.isTaxable && this.tax !== undefined;
       },
+      "taxType is required when the category is taxable",
+    ],
+    validate: {
+      validator: function (v: string) {
+        return this.isTaxable ? v !== null || undefined : v === null;
+      },
+      message: "taxType must be specified if taxable, else null",
     },
   },
 

@@ -14,7 +14,10 @@ const createSubCategory = asyncHandler(
     const payload = req.body as unknown as ISubCategory;
     const { id } = req.params; // the category ID that the sub-category belongs to
     const category = await Category.findById(id);
-    if (!category) return next(new AppError("Category not found", 404));
+    if (!category)
+      return next(
+        new AppError("Please select a valid category for the sub-category", 404)
+      );
 
     const subCategory = new SubCategory(payload);
 
@@ -28,6 +31,7 @@ const createSubCategory = asyncHandler(
         if (!imageLink) return next(new AppError("Image upload failed", 400));
         subCategory.image = imageLink;
       } catch (ex) {
+        console.log(ex);
         return next(
           new AppError(`Error uploading image. Please try again`, 500)
         );

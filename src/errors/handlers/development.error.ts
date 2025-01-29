@@ -7,6 +7,9 @@ const handleDevelopemntErrors = (err: IError, res: Response) => {
   return res.status(statusCode).json({
     isOperational: err.isOperational,
     message: err.message,
+    err: {
+      err,
+    },
   });
 };
 
