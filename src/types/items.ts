@@ -7,4 +7,7 @@ export default interface iItems {
   baseAmount: number;
   discount: number;
   totalAmount: number;
+
+  categoryID?: string;
+  subCategoryID?: string;
 }

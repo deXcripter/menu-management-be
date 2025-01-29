@@ -41,7 +41,7 @@ const itemSchema = new mongoose.Schema<iItems>({
 
   baseAmount: {
     type: Number,
-    required: [true, "Please enter the base amount"],
+    required: [true, "Please enter the baseAmount"],
   },
 
   discount: {
@@ -50,7 +50,21 @@ const itemSchema = new mongoose.Schema<iItems>({
   },
 
   totalAmount: Number,
+
+  categoryID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+  },
+
+  subCategoryID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "SubCategory",
+  },
 });
+
+// making the name unique to the category or sub-category
+itemSchema.index({ name: 1, categoryID: 1 }, { unique: true });
+itemSchema.index({ name: 1, subCategoryID: 1 }, { unique: true });
 
 itemSchema.pre("save", function (next) {
   this.totalAmount = this.baseAmount - this.discount;

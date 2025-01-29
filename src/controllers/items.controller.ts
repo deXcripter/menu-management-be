@@ -5,12 +5,43 @@ import asyncHandler from "../utils/async-wrapper";
 import { deleteImage, uploadImage } from "../utils/image-uploader";
 import AppError from "../utils/app-error";
 import IPagination from "../types/pagination";
+import SubCategory from "../models/sub-category";
+import Category from "../models/category";
 
 const folder = "items";
 
 const createItem = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body as iItems;
+
+    if (payload.categoryID && payload.subCategoryID) {
+      return next(
+        new AppError("Item can't have both category and subcategory", 400)
+      );
+    }
+
+    if (!payload.categoryID && !payload.subCategoryID) {
+      return next(
+        new AppError(
+          "Item must belong to either a category or a subcategory",
+          400
+        )
+      );
+    }
+
+    if (payload.subCategoryID) {
+      const subCategory = await SubCategory.findById(payload.subCategoryID);
+      if (!subCategory) {
+        return next(new AppError("Subcategory not found", 404));
+      }
+    }
+
+    if (payload.categoryID) {
+      const category = await Category.findById(payload.categoryID);
+      if (!category) {
+        return next(new AppError("Category not found", 404));
+      }
+    }
 
     const newItem = new Item(payload);
 
@@ -36,7 +67,7 @@ const updateItem = asyncHandler(
     if (req.file) {
       const imageLink = await uploadImage(req, folder);
       if (!imageLink) return next(new AppError("Image upload failed", 400));
-      deleteImage(folder, payload.image); // delete the old image before replacing
+      deleteImage(folder, payload.image);
       payload.image = imageLink;
     }
 
