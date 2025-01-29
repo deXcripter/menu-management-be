@@ -25,6 +25,7 @@ const categorySchema = new mongoose.Schema<ICategory>({
     require: [true, "Please enter a description"],
   },
 
+  // specifies whether or not tax can be applied to a category
   isTaxable: {
     type: Boolean,
     required: true,
@@ -33,6 +34,7 @@ const categorySchema = new mongoose.Schema<ICategory>({
 
   tax: {
     type: Number,
+    default: 0,
     required: [
       function () {
         return this.isTaxable;
@@ -41,9 +43,9 @@ const categorySchema = new mongoose.Schema<ICategory>({
     ],
     validate: {
       validator: function (v: Number) {
-        return this.isTaxable ? v !== 0 || undefined : v === 0;
+        return this.isTaxable ? v !== 0 : v === 0;
       },
-      message: "tax must be a non-zero number if taxable, else 0",
+      message: "tax must be a non-zero number if taxable, else 0 ",
     },
   },
 
