@@ -73,8 +73,6 @@ const updateCategory = asyncHandler(
     const { id } = req.params;
     const payload = req.query as unknown as ICategory;
 
-    console.log(payload);
-
     // @ts-ignore - delete image from payload to avoid mutating from malicious users since the endpoint is not protected
     delete payload.image;
 
