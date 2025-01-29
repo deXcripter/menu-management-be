@@ -7,6 +7,7 @@ import { deleteImage, uploadImage } from "../utils/image-uploader";
 import IPagination from "../types/pagination";
 import SubCategory from "../models/sub-category";
 import mongoose from "mongoose";
+import Item from "../models/items";
 
 const folder = "categories";
 
@@ -102,6 +103,26 @@ const updateCategory = asyncHandler(
   }
 );
 
+const deleteCategory = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    const category = await Category.findByIdAndDelete(id);
+
+    if (!category) return next(new AppError("Category not found", 404));
+
+    // delete image and all sub-categories and items associated with the category
+    deleteImage(folder, category.image);
+    await SubCategory.deleteMany({ categoryID: category._id });
+    await Item.deleteMany({ categoryID: category._id });
+
+    res.status(204).json({
+      status: "success",
+      data: null,
+    });
+  }
+);
+
 const getAllSubCategories = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
@@ -110,20 +131,43 @@ const getAllSubCategories = asyncHandler(
       limit: string;
     };
 
+    if (!(await Category.exists({ _id: id })))
+      return next(new AppError("Category not found", 404));
+
     const pageInt = parseInt(page);
     const limitInt = parseInt(limit);
     const skip = (pageInt - 1) * limitInt;
 
     const subCategories = await SubCategory.find({
       categoryID: new mongoose.Types.ObjectId(id),
+    })
+      .skip(skip)
+      .limit(limitInt);
+
+    const total = await SubCategory.countDocuments({
+      categoryID: new mongoose.Types.ObjectId(id),
     });
+
+    const pagination: IPagination = {
+      total: total,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      hasNextPage: total > limitInt * pageInt,
+      hasPrevPage: pageInt > 1,
+    };
 
     res.status(200).json({
       status: "success",
-      data: subCategories,
+      data: { list: subCategories, pagination },
     });
   }
 );
 
 // exports
-export { createCategory, getCategory, updateCategory, getAllSubCategories };
+export {
+  createCategory,
+  getCategory,
+  updateCategory,
+  deleteCategory,
+  getAllSubCategories,
+};

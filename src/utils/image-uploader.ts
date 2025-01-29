@@ -36,12 +36,16 @@ const uploadImage = async (
 };
 
 const deleteImage = async (folder: string, imageLink: string) => {
-  const publicId = imageLink.split("/").pop()?.split(".")[0];
-  if (!publicId) return;
+  try {
+    const publicId = imageLink.split("/").pop()?.split(".")[0];
+    if (!publicId) return;
 
-  const fullPublicId = `${folder}/${publicId}`;
-  const result = await cloudinary.uploader.destroy(fullPublicId);
-  if (result.result !== "ok") console.error("Error deleting image:", result);
+    const fullPublicId = `${folder}/${publicId}`;
+    const result = await cloudinary.uploader.destroy(fullPublicId);
+    if (result.result !== "ok") console.error("Error deleting image:", result);
+  } catch (error) {
+    console.error("Error deleting image:", error);
+  }
 };
 
 export { uploadImage, deleteImage };
