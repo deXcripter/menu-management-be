@@ -30,7 +30,6 @@ const uploadImage = async (
     return image.secure_url;
   } catch (error) {
     console.error("Error uploading image:", error);
-    // return new AppError(`Error uploading image: ${error}`, 400);
     return undefined;
   }
 };

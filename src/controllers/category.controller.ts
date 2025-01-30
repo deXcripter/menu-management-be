@@ -3,7 +3,7 @@ import Category from "../models/category";
 import asyncHandler from "../utils/async-wrapper";
 import { Request, Response, NextFunction } from "express";
 import ICategory from "../types/category";
-import { deleteImage, uploadImage } from "../utils/image-uploader";
+import { deleteImage, uploadImage } from "../utils/image-handler";
 import IPagination from "../types/pagination";
 import SubCategory from "../models/sub-category";
 import mongoose from "mongoose";
@@ -162,6 +162,8 @@ const getAllSubCategories = asyncHandler(
     });
   }
 );
+
+// TODO: Add a new controller to get all items in a category
 
 // exports
 export {

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Item from "../models/items";
 import iItems from "../types/items";
 import asyncHandler from "../utils/async-wrapper";
-import { deleteImage, uploadImage } from "../utils/image-uploader";
+import { deleteImage, uploadImage } from "../utils/image-handler";
 import AppError from "../utils/app-error";
 import IPagination from "../types/pagination";
 import SubCategory from "../models/sub-category";
