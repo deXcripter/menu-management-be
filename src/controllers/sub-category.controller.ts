@@ -141,9 +141,37 @@ const getItemsInSubCategory = asyncHandler(
   }
 );
 
+const getSubCategoryById = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params as { id: string };
+
+    const subCategory = await SubCategory.findById(id).populate("categoryID");
+    if (!subCategory) return next(new AppError("Sub-category not found", 404));
+
+    res.status(200).json({ data: subCategory });
+  }
+);
+
+const deleteSubCategory = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params as { id: string };
+
+    const subCategory = await SubCategory.findByIdAndDelete(id);
+    if (!subCategory) return next(new AppError("Sub-category not found", 404));
+
+    await Item.deleteMany({ subCategoryID: new Types.ObjectId(id) });
+
+    deleteImage(folder, subCategory.image);
+
+    res.status(200).json({ message: "Sub-category deleted" });
+  }
+);
+
 export {
   createSubCategory,
   updateSubCategory,
   getSubCategory,
   getItemsInSubCategory,
+  getSubCategoryById,
+  deleteSubCategory,
 };
