@@ -107,14 +107,21 @@ const deleteCategory = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
-    const category = await Category.findByIdAndDelete(id);
+    const category = await Category.findById(id);
 
     if (!category) return next(new AppError("Category not found", 404));
 
-    // delete image and all sub-categories and items associated with the category
-    deleteImage(folder, category.image);
-    await SubCategory.deleteMany({ categoryID: category._id });
     await Item.deleteMany({ categoryID: category._id });
+
+    const subcategories = await SubCategory.find({ categoryID: category._id });
+    for (const subcategory of subcategories) {
+      await Item.deleteMany({ subCategoryID: subcategory._id });
+      await SubCategory.findByIdAndDelete(subcategory._id);
+      deleteImage(folder, subcategory.image);
+    }
+
+    await Category.findByIdAndDelete(id);
+    deleteImage(folder, category.image);
 
     res.status(204).json({
       status: "success",
