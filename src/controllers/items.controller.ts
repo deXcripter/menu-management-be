@@ -101,7 +101,7 @@ const updateItem = asyncHandler(
 
     const item = await Item.findByIdAndUpdate(id, payload, {
       new: true,
-      runValidators: true,
+      runValidators: true, // BUG: runValidators is causing an error for now
     });
 
     if (!item) return next(new AppError("item not found", 404));
@@ -147,6 +147,22 @@ const getItems = asyncHandler(
   }
 );
 
+const getItemById = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    const item = await Item.findById(id)
+      .populate("categoryID")
+      .populate("subCategoryID");
+    if (!item) return next(new AppError("Item not found", 404));
+
+    res.status(200).json({
+      status: "success",
+      data: item,
+    });
+  }
+);
+
 const deleteItem = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
@@ -163,4 +179,4 @@ const deleteItem = asyncHandler(
   }
 );
 
-export { createItem, getItems, updateItem, deleteItem };
+export { createItem, getItems, updateItem, deleteItem, getItemById };

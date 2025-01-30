@@ -31,8 +31,8 @@ const itemSchema = new mongoose.Schema<iItems>({
     type: Number,
     default: 0,
     validate: {
-      validator: function (v: Number) {
-        return this.isTaxable ? v !== 0 : v === 0;
+      validator: function (v: number) {
+        return this.isTaxable ? v > 0 : v === 0;
       },
       message:
         "Tax value must be a non-zero number if taxable, or 0 if not taxable",

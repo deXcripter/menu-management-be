@@ -64,6 +64,7 @@ const updateSubCategory = asyncHandler(
 
     const subCategory = await SubCategory.findByIdAndUpdate(id, payload, {
       new: true,
+      runValidators: true,
     });
 
     if (!subCategory) return next(new AppError("subCategory not found", 404));
