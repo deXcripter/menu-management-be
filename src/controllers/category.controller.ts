@@ -170,7 +170,61 @@ const getAllSubCategories = asyncHandler(
   }
 );
 
-// TODO: Add a new controller to get all items in a category
+const getCategoryById = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    const category = await Category.findById(id);
+
+    if (!category) {
+      return next(new AppError("Category not found", 404));
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        category,
+      },
+    });
+  }
+);
+
+const getAllItemsInACategory = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params as { id: string };
+    const { page = "1", limit = "10" } = req.query as {
+      page: string;
+      limit: string;
+    };
+
+    if (!(await Category.exists({ _id: new mongoose.Types.ObjectId(id) })))
+      return next(new AppError("Category not found", 404));
+
+    const pageInt = parseInt(page);
+    const limitInt = parseInt(limit);
+    const skip = (pageInt - 1) * limitInt;
+
+    const items = await Item.find({
+      categoryID: new mongoose.Types.ObjectId(id),
+    })
+      .skip(skip)
+      .limit(limitInt);
+
+    const total = await Item.countDocuments({
+      categoryID: new mongoose.Types.ObjectId(id),
+    });
+
+    const pagination: IPagination = {
+      total,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      hasNextPage: total > parseInt(limit) * parseInt(page),
+      hasPrevPage: parseInt(page) > 1,
+    };
+
+    res.status(200).json({ data: { list: items, pagination } });
+  }
+);
 
 // exports
 export {
@@ -179,4 +233,6 @@ export {
   updateCategory,
   deleteCategory,
   getAllSubCategories,
+  getCategoryById,
+  getAllItemsInACategory,
 };
