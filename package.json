@@ -25,5 +25,8 @@
     "node.js"
   ],
   "author": "deXcripter",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemailer": "^6.10.0"
+  }
 }
