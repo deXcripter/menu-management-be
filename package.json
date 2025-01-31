@@ -1,4 +1,19 @@
 {
+  "name": "menu-management-be",
+  "version": "1.0.0",
+  "description": "A node.js server for managing menu",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/index.js"
+  },
+  "keywords": [
+    "menu-management",
+    "menu",
+    "express.js",
+    "node.js"
+  ],
+  "author": "deXcripter",
+  "license": "ISC",
   "dependencies": {
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.0",
@@ -11,21 +26,6 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1"
   },
-  "name": "menu-management-be",
-  "version": "1.0.0",
-  "description": "A node.js server for managing menu",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "menu-management",
-    "menu",
-    "express.js",
-    "node.js"
-  ],
-  "author": "deXcripter",
-  "license": "ISC",
   "devDependencies": {
     "nodemailer": "^6.10.0"
   }
