@@ -6,15 +6,9 @@
 
 3.  [Installation](#installation)
 
-4.  Configuration
+4.  [Configuration](#configuration)
 
-5.  API Documentation
-
-6.  Environment Variables
-
-7.  Running the Server
-
-8.  Contact
+5.  [API Documentation](#api-documentation)
 
 ## Features
 
@@ -74,9 +68,9 @@ Attributes
 - Total Amount: Number (Base - Discount)
 </details>
 
-- Items will be created under a sub-category or a category
-- A sub-category can have multiple items in it
-  Attributes to create an item:
+- Items will be created under a sub-category or a category.
+- A sub-category can have multiple items in it.
+  Attributes to create an item.
 
 ## Technologies Used
 
@@ -112,11 +106,16 @@ Environment Variables
 
 Create a `.env` file in the root directory and add the following variables:
 
+#### Enviromental Variables
+
 ```env
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 
-MONGO_URI=mongodb+srv://<your-username>:<your-password>@your-
-mongo-atlas-connection-string
+MONGO_URI=mongodb+srv://<your-username>:<your-password>@your-mongo-atlas-connection-string
 ```
+
+## API Documentation
+
+@> [Link to postman workspace](https://www.postman.com/cloudy-shadow-945205/workspace/my-workspace)
