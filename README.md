@@ -97,8 +97,15 @@ npm i
 ```
 
 - Setup env variables
+
   - create a `.env` file in the root directory.
   - Add required enviroment variables (see [enviromental variables](#enviromental-variables))
+
+- Start the server
+
+```bash
+npm start
+```
 
 ## Configuration
 
@@ -109,6 +116,8 @@ Create a `.env` file in the root directory and add the following variables:
 #### Enviromental Variables
 
 ```env
+NODE_ENV=development
+
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
@@ -119,3 +128,5 @@ MONGO_URI=mongodb+srv://<your-username>:<your-password>@your-mongo-atlas-connect
 ## API Documentation
 
 @> [Link to postman workspace](https://www.postman.com/cloudy-shadow-945205/workspace/my-workspace)
+
+Base URL @> `https://menu-management-be.onrender.com`
