@@ -130,3 +130,11 @@ MONGO_URI=mongodb+srv://<your-username>:<your-password>@your-mongo-atlas-connect
 @> [Link to postman workspace](https://www.postman.com/cloudy-shadow-945205/workspace/my-workspace)
 
 Base URL @> `https://menu-management-be.onrender.com`
+
+### SUB-CATEGORY
+- POST `{{URL}}/api/v1/sub-category` Create a Sub-Category
+- GET `{{URL}}/api/v1/sub-category?page=1&limit=10&query=` Get sub-categories
+- GET `{{URL}}/api/v1/sub-category/679dfcfa20eb3b88fa700567` Get Sub-Category by ID
+- GET   `{{URL}}/api/v1/sub-category/items/679aa5bee9a7cd480960c951?page=1&limit=10` Get Items in a Sub-Category
+- PATCH `{{URL}}/api/v1/sub-category/6799f9ce9841f364dae47579?name=fruit` Updates a subcategory
+- DELETE `{{URL}}/api/v1/sub-category/679aa5bee9a7cd480960c951` Deletes a Sub-Category
